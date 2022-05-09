@@ -57,7 +57,7 @@ public class MainFrame extends JFrame {
         }else {
             gender = "";
         }
-        String grade = gradeTextField.getText();
+        String grade = gradeTextField.getText().toUpperCase();
 
         if (!id.isEmpty() && !name.isEmpty()) {
             if (CheckId(id)) {
@@ -65,15 +65,15 @@ public class MainFrame extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (!CheckIdValid(id)) {
-                JOptionPane.showMessageDialog(null, "ID is invalid", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalid ID! Try Again", "Error",
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             } else if (!CheckNameValid(name)) {
                 JOptionPane.showMessageDialog(null, "Name is invalid", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (!CheckGradeValid(grade)){
-                JOptionPane.showMessageDialog(null, "Grade is invalid", "Error",
+                JOptionPane.showMessageDialog(null, "Grade must be P, M or D", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -126,7 +126,7 @@ public class MainFrame extends JFrame {
         }else {
             gender = "";
         }
-        String grade = gradeTextField.getText();
+        String grade = gradeTextField.getText().toUpperCase();
         if (!id.isEmpty() && !name.isEmpty()) {
             if (!CheckNameValid(name)) {
                 JOptionPane.showMessageDialog(null, "Name is invalid", "Error",
@@ -202,7 +202,7 @@ public class MainFrame extends JFrame {
             bufferedReader.close();
             return objects;
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
         return null;
     }
@@ -221,7 +221,7 @@ public class MainFrame extends JFrame {
             fw.close();
 
         }catch (Exception exception){
-            exception.printStackTrace();
+
         }
     }
 
@@ -246,17 +246,7 @@ public class MainFrame extends JFrame {
             }
         }return false;
     }
-    // Check ID valid
-    public boolean CheckIdValid(String id){
-        String regexPattern = "[0-9]+";
-        boolean validId = Pattern.compile(regexPattern)
-                .matcher(id)
-                .matches();
-        if (validId){
-            return true;
-        }
-        return false;
-    }
+
     // Check name valid
     public boolean CheckNameValid(String name){
         String regexPattern = "[^0-9]+";
@@ -268,11 +258,21 @@ public class MainFrame extends JFrame {
         }
         return false;
     }
+
+    // Check ID valid
+    public boolean CheckIdValid(String id){
+        try {
+            Integer.parseInt(id);
+            return true;
+        }catch (NumberFormatException e){
+
+        }
+        return false;
+    }
+
     // Check grade valid
     public boolean CheckGradeValid(String grade){
-        if (grade.equalsIgnoreCase("P") || grade.equalsIgnoreCase("Pass")
-                || grade.equalsIgnoreCase("M") || grade.equalsIgnoreCase("Merit")
-                || grade.equalsIgnoreCase("D") || grade.equalsIgnoreCase("Distinction")){
+        if (grade.equalsIgnoreCase("P") || grade.equalsIgnoreCase("M") || grade.equalsIgnoreCase("D")){
             return true;
         }
         return false;
@@ -290,11 +290,9 @@ public class MainFrame extends JFrame {
         // TODO add your code here
     }
 
-
     private void male(ActionEvent e) {
         // TODO add your code here
     }
-
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -314,6 +312,8 @@ public class MainFrame extends JFrame {
         searchButton = new JButton();
         updateButton = new JButton();
         deleteButton = new JButton();
+        wrongInput = new JLabel();
+        errorInput = new JLabel();
         scrollPane1 = new JScrollPane();
         tableStudent = new JTable();
 
@@ -323,12 +323,12 @@ public class MainFrame extends JFrame {
 
         //======== panel1 ========
         {
-            panel1.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing.
-            border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER
-            ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font
-            . BOLD ,12 ) ,java . awt. Color .red ) ,panel1. getBorder () ) ); panel1. addPropertyChangeListener(
-            new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r"
-            .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+            panel1.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder
+            ( 0, 0 ,0 , 0) ,  "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border
+            .TitledBorder . BOTTOM, new java. awt .Font ( "D\u0069al\u006fg", java .awt . Font. BOLD ,12 ) ,java . awt
+            . Color .red ) ,panel1. getBorder () ) ); panel1. addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void
+            propertyChange (java . beans. PropertyChangeEvent e) { if( "\u0062or\u0064er" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
+            ;} } );
 
             //---- nameLabel ----
             nameLabel.setText("Full Name");
@@ -402,7 +402,7 @@ public class MainFrame extends JFrame {
                                     .addComponent(searchButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(addButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(panel1Layout.createSequentialGroup()
-                                .addGroup(panel1Layout.createParallelGroup()
+                                .addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                     .addGroup(panel1Layout.createSequentialGroup()
                                         .addComponent(genderLabel, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -410,12 +410,17 @@ public class MainFrame extends JFrame {
                                         .addGap(12, 12, 12)
                                         .addComponent(femaleRadioButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(otherRadioButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(otherRadioButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+                                        .addGap(20, 20, 20))
                                     .addGroup(panel1Layout.createSequentialGroup()
                                         .addComponent(gradeLabel, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(gradeTextField, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)))
-                                .addGap(20, 20, 20)
+                                        .addComponent(gradeTextField, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(panel1Layout.createParallelGroup()
+                                            .addComponent(wrongInput, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(errorInput, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(70, 70, 70)))
                                 .addGroup(panel1Layout.createParallelGroup()
                                     .addComponent(deleteButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(updateButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -446,7 +451,9 @@ public class MainFrame extends JFrame {
                         .addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(gradeLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                             .addComponent(gradeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteButton))
+                            .addComponent(deleteButton)
+                            .addComponent(wrongInput)
+                            .addComponent(errorInput, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(20, Short.MAX_VALUE))
             );
         }
@@ -530,6 +537,8 @@ public class MainFrame extends JFrame {
     private JButton searchButton;
     private JButton updateButton;
     private JButton deleteButton;
+    private JLabel wrongInput;
+    private JLabel errorInput;
     private JScrollPane scrollPane1;
     private JTable tableStudent;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
